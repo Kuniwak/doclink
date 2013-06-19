@@ -135,10 +135,28 @@
    * @exports
    */
   function DocLink(comment, target, context) {
+
+
+    /**
+     * A comment was linked to the symbol.
+     * @type {Comment}
+     */
     this.comment = comment;
+
+
+    /**
+     * A symbol as the link target.
+     * @type {Comment}
+     */
     this.target = target;
+
+
+    /**
+     * A symbol as the context (equals the parent node) of the link target.
+     * @type {Comment}
+     */
     this.context = context;
-  };
+  }
 
 
   /**
@@ -147,20 +165,6 @@
    * @type {string}
    */
   DocLink.propName = '__$doclink$__';
-
-
-  /**
-   * A comment was linked to the symbol.
-   * @type {Comment}
-   */
-  DocLink.prototype.comment;
-
-
-  /**
-   * A symbol as the link target.
-   * @type {Comment}
-   */
-  DocLink.prototype.target;
 
 
   /**

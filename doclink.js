@@ -71,9 +71,10 @@
   LinkasbleSyntax = {
     AssignmentExpression: true,
     CallExpression: true,
-    FunctionExpression: true,
     FunctionDeclaration: true,
+    FunctionExpression: true,
     Identifier: true,
+    MemberExpression: true,
     ObjectExpression: true,
     Property: true,
     VariableDeclaration: true
@@ -276,7 +277,7 @@
         currentComment = comments[currentCommentIdx];
 
         // Check the AST node type can be linked.
-        if (LinkasbleSyntax[currentNode.type]) {
+        if (LinkasbleSyntax[currentNode.type] || parentNode && (parentNode.type === 'ArrayExpression' || parentNode.type === 'ReturnStatement')) {
           // The last doc comment should link to a symbol, the others should not
           // be linked.
           //
@@ -284,7 +285,7 @@
           //   /** It should NOT be linked. */
           //   /** It should be linked. */
           //   expr;
-          while (currentComment && currentComment.range[1] < currentNodeStart) {
+          while (currentComment && currentComment.range[1] <= currentNodeStart) {
             if (prevComment) {
               linker.link(prevComment, null, parentNode);
             }

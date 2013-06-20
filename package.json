@@ -2,7 +2,7 @@
   "name": "doclink",
   "description": "Make links of JsDoc comment to AST node",
   "version": "0.0.0",
-  "author": "Orga Chem <orga.chem.job@gmail.com>",
+  "author": "orgachem",
   "keywords": [
     "jsdoc",
     "ast",

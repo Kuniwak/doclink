@@ -4,12 +4,15 @@
 
 var doclink = require('../../doclink.js');
 
+var path = require('path');
 var fs = require('fs');
 var esprima = require('esprima');
 
+const LEGAL_DOC_COMMENTS_PATH = path.join(module.filename, '../../fixtures/legal_symbol_doc_comments.js');
+
 module.exports = {
   'Test analyzing legal doc comments': function(test) {
-    var legal = fs.readFileSync('../samples/legal.js');
+    var legal = fs.readFileSync(LEGAL_DOC_COMMENTS_PATH);
     var ast = esprima.parse(legal, { comment: true, range: true });
 
     var target, i = 0;
@@ -19,132 +22,132 @@ module.exports = {
 
     link = links[i++];
     test.equals(link.target.type, 'VariableDeclaration');
-    test.equals('*' + link.target.declarations[0].id.name, link.comment.value);
+    test.equals('*varDecl', link.comment.value);
     test.equals(link.context.type, 'Program');
 
     link = links[i++];
     test.equals(link.target.type, 'VariableDeclaration');
-    test.equals('*' + link.target.declarations[0].id.name, link.comment.value);
+    test.equals('*constDecl', link.comment.value);
     test.equals(link.context.type, 'Program');
 
     link = links[i++];
     test.equals(link.target.type, 'VariableDeclaration');
-    test.equals('*' + link.target.declarations[0].id.name, link.comment.value);
+    test.equals('*letDef', link.comment.value);
     test.equals(link.context.type, 'Program');
 
     link = links[i++];
     test.equals(link.target.type, 'FunctionDeclaration');
-    test.equals('*' + link.target.id.name, link.comment.value);
+    test.equals('*funcDecl', link.comment.value);
     test.equals(link.context.type, 'Program');
 
     link = links[i++];
     test.equals(link.target.type, 'CallExpression');
-    test.equals('*' + link.target.arguments[1].value, link.comment.value);
+    test.equals('*objDefProp', link.comment.value);
     test.equals(link.context.type, 'ExpressionStatement');
 
     link = links[i++];
     test.equals(link.target.type, 'MemberExpression');
-    test.equals('*' + link.target.object.name + '.' + link.target.property.name, link.comment.value);
+    test.equals('*obj.memExpr', link.comment.value);
     test.equals(link.context.type, 'ExpressionStatement');
 
     link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*varId', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*varId1', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*varId2', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*constId', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*constId1', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*constId2', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*letId', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*letId1', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
+
+    link = links[i++];
+    test.equals(link.target.type, 'VariableDeclarator');
+    test.equals('*letId2', link.comment.value);
+    test.equals(link.context.type, 'VariableDeclaration');
 
     link = links[i++];
     test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
-    test.equals(link.context.type, 'VariableDeclarator');
-
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
+    test.equals('*funcDeclId', link.comment.value);
     test.equals(link.context.type, 'FunctionDeclaration');
 
     link = links[i++];
     test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
+    test.equals('*funcExprId', link.comment.value);
     test.equals(link.context.type, 'FunctionExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
+    test.equals('*argId', link.comment.value);
     test.equals(link.context.type, 'FunctionExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
+    test.equals('*argId1', link.comment.value);
     test.equals(link.context.type, 'FunctionExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Identifier');
-    test.equals('*' + link.target.name, link.comment.value);
+    test.equals('*argId2', link.comment.value);
     test.equals(link.context.type, 'FunctionExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Property');
-    test.equals('*' + link.target.key.name, link.comment.value);
+    test.equals('*propId', link.comment.value);
     test.equals(link.context.type, 'ObjectExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Property');
-    test.equals('*' + link.target.key.name, link.comment.value);
+    test.equals('*propId1', link.comment.value);
     test.equals(link.context.type, 'ObjectExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Property');
-    test.equals('*' + link.target.key.name, link.comment.value);
+    test.equals('*propId2', link.comment.value);
     test.equals(link.context.type, 'ObjectExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Literal');
-    test.equals('*' + link.context.elements.indexOf(link.target), link.comment.value);
+    test.equals('*0', link.comment.value);
     test.equals(link.context.type, 'ArrayExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Literal');
-    test.equals('*' + link.context.elements.indexOf(link.target), link.comment.value);
+    test.equals('*0', link.comment.value);
     test.equals(link.context.type, 'ArrayExpression');
 
     link = links[i++];
     test.equals(link.target.type, 'Literal');
-    test.equals('*' + link.context.elements.indexOf(link.target), link.comment.value);
+    test.equals('*1', link.comment.value);
     test.equals(link.context.type, 'ArrayExpression');
 
     test.done();

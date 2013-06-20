@@ -59,27 +59,15 @@
 }(function (exports, global, estraverse) {
     'use strict';
 
-    var LinkasbleSyntax,
-            isArray,
-            BREAK,
-            SKIP;
+    var NonLinkasbleSyntax,
+        isArray,
+        BREAK,
+        SKIP;
 
-
-    /**
-     * Linkable AST node type list.
-     * @enum {boolean}
-     * @exports
-     */
-    LinkasbleSyntax = {
-        AssignmentExpression: true,
-        CallExpression: true,
-        FunctionDeclaration: true,
-        FunctionExpression: true,
-        Identifier: true,
-        MemberExpression: true,
-        ObjectExpression: true,
-        Property: true,
-        VariableDeclaration: true
+    NonLinkasbleSyntax = {
+        Program: true,
+        SequenceExpression: true,
+        ExpressionStatement: true
     };
 
 
@@ -255,10 +243,10 @@
         assert(Array.isArray(root.range), 'range should be exists');
 
         var linker,
-                comments,
-                commentsLen,
-                currentComment,
-                currentCommentIdx;
+            comments,
+            commentsLen,
+            currentComment,
+            currentCommentIdx;
 
 
         linker = new DocLinker(root.comments);
@@ -275,15 +263,15 @@
         estraverse.traverse(root, {
             enter: function(currentNode, parentNode) {
                 var currentNodeStart,
-                        currentNodeEnd,
-                        prevComment;
+                    currentNodeEnd,
+                    prevComment;
 
                 currentNodeStart = currentNode.range[0];
                 currentNodeEnd = currentNode.range[1];
                 currentComment = comments[currentCommentIdx];
 
                 // Check the AST node type can be linked.
-                if (LinkasbleSyntax[currentNode.type] || parentNode && (parentNode.type === 'ArrayExpression' || parentNode.type === 'ReturnStatement')) {
+                if (!NonLinkasbleSyntax[currentNode.type]) {
                     // The last doc comment should link to a symbol, the others should not
                     // be linked.
                     //
@@ -326,7 +314,7 @@
     }
 
 
-    exports.LinkasbleSyntax = LinkasbleSyntax;
+    exports.NonLinkasbleSyntax = NonLinkasbleSyntax;
     exports.DocLink = DocLink;
     exports.DocLinker = DocLinker;
     exports.analyze = analyze;

@@ -28,10 +28,10 @@ var /**varId*/ varId;
 var /**varId1*/ varId1, /**varId2*/ varId2;
 
 
-const /**constDecl*/ constDecl = null;
+const /**constId*/ constId = null;
 
 
-const /**constDecl1*/ constDecl1 = null, /**constDecl2*/ constDecl2 = null;
+const /**constId1*/ constId1 = null, /**constId2*/ constId2 = null;
 
 
 let /**letId*/ letId;

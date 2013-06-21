@@ -1,7 +1,7 @@
 {
   "name": "doclink",
-  "description": "Make links of JsDoc comment to AST node",
-  "version": "0.0.0",
+  "description": "Make doc links that link to AST node and JsDoc comment",
+  "version": "0.0.1",
   "author": "orgachem",
   "keywords": [
     "jsdoc",
@@ -21,16 +21,17 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "test": "node test/run.js"
+    "test": "./node_modules/mocha/bin/mocha test/tests"
   },
   "readmeFilename": "README.md",
   "dependencies": {
     "estraverse": "~1.1.2-1"
   },
   "devDependencies": {
-    "nodeunit": "~0.8.0",
     "benchmark": "~1.0.0",
-    "esprima": "~1.0.3"
+    "esprima": "~1.0.3",
+    "mocha": "~1.11.0",
+    "should": "~1.2.2"
   },
   "license": "MIT"
 }

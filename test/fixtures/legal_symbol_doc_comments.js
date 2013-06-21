@@ -6,8 +6,8 @@ var varDecl;
 const constDecl = null;
 
 
-/**letDef*/
-let letDef;
+/**letDecl*/
+let letDecl;
 
 
 /**funcDecl*/

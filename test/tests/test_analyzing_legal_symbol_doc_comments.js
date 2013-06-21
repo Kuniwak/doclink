@@ -4,152 +4,215 @@
 
 var doclink = require('../../doclink.js');
 
+var should = require('should');
+
 var path = require('path');
 var fs = require('fs');
 var esprima = require('esprima');
 
 const LEGAL_DOC_COMMENTS_PATH = path.join(module.filename, '../../fixtures/legal_symbol_doc_comments.js');
 
-module.exports = {
-  'Test analyzing legal doc comments': function(test) {
-    var legal = fs.readFileSync(LEGAL_DOC_COMMENTS_PATH);
-    var ast = esprima.parse(legal, { comment: true, range: true });
+describe('doclink', function() {
+  describe('#analyze()', function() {
+    var legal,
+        ast,
+        links;
 
-    var target, i = 0;
-    var links = doclink.analyze(ast).links;
+    legal = fs.readFileSync(LEGAL_DOC_COMMENTS_PATH);
+    ast = esprima.parse(legal, { comment: true, range: true });
+    links = doclink.analyze(ast).links;
 
-    test.equals(links.length, 27);
+    it('should have 27 doc links by the fixture', function() {
+      links.length.should.equal(27);
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclaration');
-    test.equals('*varDecl', link.comment.value);
-    test.equals(link.context.type, 'Program');
+    it('should get a doc link to a variable declaration', function() {
+      var link = links[0];
+      link.target.type.should.equal('VariableDeclaration');
+      link.comment.value.should.equal('*varDecl');
+      link.context.type.should.equal('Program');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclaration');
-    test.equals('*constDecl', link.comment.value);
-    test.equals(link.context.type, 'Program');
+    it('should get a doc link to a constant declaration', function() {
+      var link = links[1];
+      link.target.type.should.equal('VariableDeclaration');
+      link.comment.value.should.equal('*constDecl');
+      link.context.type.should.equal('Program');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclaration');
-    test.equals('*letDef', link.comment.value);
-    test.equals(link.context.type, 'Program');
+    it('should get a doc link to a let declaration', function() {
+      var link = links[2];
+      link.target.type.should.equal('VariableDeclaration');
+      link.comment.value.should.equal('*letDecl');
+      link.context.type.should.equal('Program');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'FunctionDeclaration');
-    test.equals('*funcDecl', link.comment.value);
-    test.equals(link.context.type, 'Program');
+    it('should get a doc link to a function declaration', function() {
+      var link = links[3];
+      link.target.type.should.equal('FunctionDeclaration');
+      link.comment.value.should.equal('*funcDecl');
+      link.context.type.should.equal('Program');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'CallExpression');
-    test.equals('*objDefProp', link.comment.value);
-    test.equals(link.context.type, 'ExpressionStatement');
+    it('should get a doc link to a call expression', function() {
+      var link = links[4];
+      link.target.type.should.equal('CallExpression');
+      link.comment.value.should.equal('*objDefProp');
+      link.context.type.should.equal('ExpressionStatement');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'MemberExpression');
-    test.equals('*obj.memExpr', link.comment.value);
-    test.equals(link.context.type, 'ExpressionStatement');
+    it('should get a doc link to a member expression', function() {
+      var link = links[5];
+      link.target.type.should.equal('MemberExpression');
+      link.comment.value.should.equal('*obj.memExpr');
+      link.context.type.should.equal('ExpressionStatement');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*varId', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to a variable declarator', function() {
+      var link = links[6];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*varId');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*varId1', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to the first variable declarator', function() {
+      var link = links[7];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*varId1');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*varId2', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to the second variable declarator', function() {
+      var link = links[8];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*varId2');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*constId', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to a constant declarator', function() {
+      var link = links[9];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*constId');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*constId1', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to the first constant declarator', function() {
+      var link = links[10];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*constId1');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*constId2', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to the second constant declarator', function() {
+      var link = links[11];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*constId2');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*letId', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to a let declarator', function() {
+      var link = links[12];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*letId');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*letId1', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to the first let declarator', function() {
+      var link = links[13];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*letId1');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'VariableDeclarator');
-    test.equals('*letId2', link.comment.value);
-    test.equals(link.context.type, 'VariableDeclaration');
+    it('should get a doc link to the second let declarator', function() {
+      var link = links[14];
+      link.target.type.should.equal('VariableDeclarator');
+      link.comment.value.should.equal('*letId2');
+      link.context.type.should.equal('VariableDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*funcDeclId', link.comment.value);
-    test.equals(link.context.type, 'FunctionDeclaration');
+    it('should get a doc link to a function name identifier in a function declaration', function() {
+      var link = links[15];
+      link.target.type.should.equal('Identifier');
+      link.comment.value.should.equal('*funcDeclId');
+      link.context.type.should.equal('FunctionDeclaration');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*funcExprId', link.comment.value);
-    test.equals(link.context.type, 'FunctionExpression');
+    it('should get a doc link to a function name identifier in a function expression', function() {
+      var link = links[16];
+      link.target.type.should.equal('Identifier');
+      link.comment.value.should.equal('*funcExprId');
+      link.context.type.should.equal('FunctionExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*argId', link.comment.value);
-    test.equals(link.context.type, 'FunctionExpression');
+    it('should get a doc link to a argument name identifier', function() {
+      var link = links[17];
+      link.target.type.should.equal('Identifier');
+      link.comment.value.should.equal('*argId');
+      link.context.type.should.equal('FunctionExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*argId1', link.comment.value);
-    test.equals(link.context.type, 'FunctionExpression');
+    it('should get a doc link to the first argument name identifier', function() {
+      var link = links[18];
+      link.target.type.should.equal('Identifier');
+      link.comment.value.should.equal('*argId1');
+      link.context.type.should.equal('FunctionExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Identifier');
-    test.equals('*argId2', link.comment.value);
-    test.equals(link.context.type, 'FunctionExpression');
+    it('should get a doc link to the second argument name identifier', function() {
+      var link = links[19];
+      link.target.type.should.equal('Identifier');
+      link.comment.value.should.equal('*argId2');
+      link.context.type.should.equal('FunctionExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Property');
-    test.equals('*propId', link.comment.value);
-    test.equals(link.context.type, 'ObjectExpression');
+    it('should get a doc link to a property', function() {
+      var link = links[20];
+      link.target.type.should.equal('Property');
+      link.comment.value.should.equal('*propId');
+      link.context.type.should.equal('ObjectExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Property');
-    test.equals('*propId1', link.comment.value);
-    test.equals(link.context.type, 'ObjectExpression');
+    it('should get a doc link to the first property', function() {
+      var link = links[21];
+      link.target.type.should.equal('Property');
+      link.comment.value.should.equal('*propId1');
+      link.context.type.should.equal('ObjectExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Property');
-    test.equals('*propId2', link.comment.value);
-    test.equals(link.context.type, 'ObjectExpression');
+    it('should get a doc link to the second property', function() {
+      var link = links[22];
+      link.target.type.should.equal('Property');
+      link.comment.value.should.equal('*propId2');
+      link.context.type.should.equal('ObjectExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Literal');
-    test.equals('*0', link.comment.value);
-    test.equals(link.context.type, 'ArrayExpression');
+    it('should get a doc link to a property', function() {
+      var link = links[23];
+      link.target.type.should.equal('Literal');
+      link.comment.value.should.equal('*0');
+      link.context.type.should.equal('ArrayExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Literal');
-    test.equals('*0', link.comment.value);
-    test.equals(link.context.type, 'ArrayExpression');
+    it('should get a doc link to the first property', function() {
+      var link = links[24];
+      link.target.type.should.equal('Literal');
+      link.comment.value.should.equal('*0');
+      link.context.type.should.equal('ArrayExpression');
+    });
 
-    link = links[i++];
-    test.equals(link.target.type, 'Literal');
-    test.equals('*1', link.comment.value);
-    test.equals(link.context.type, 'ArrayExpression');
+    it('should get a doc link to the second property', function() {
+      var link = links[25];
+      link.target.type.should.equal('Literal');
+      link.comment.value.should.equal('*1');
+      link.context.type.should.equal('ArrayExpression');
+    });
 
-    test.done();
-  }
-};
+    it('should get a doc link to a return statement', function() {
+      var link = links[26];
+      link.target.type.should.equal('ObjectExpression');
+      link.comment.value.should.equal('*ret');
+      link.context.type.should.equal('ReturnStatement');
+    });
+  });
+});

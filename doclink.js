@@ -64,6 +64,11 @@
         BREAK,
         SKIP;
 
+
+    /**
+     * Non linkable syntax type.
+     * @enum {boolean}
+     */
     NonLinkasbleSyntax = {
         Program: true,
         SequenceExpression: true,
@@ -104,17 +109,18 @@
      */
     function assert(cond, text) {
         if (!cond) {
-                throw new Error(text);
+            throw new Error(text);
         }
     }
 
 
     /**
-     * Default test function used by filtering comments.
+     * Default test function used by filtering comments.  Return true if the node
+     * is a Block comment and has {@code /**} on the head.
      * @param {Comment} comment The comment to test.
      * @return {boolean} Whether the comment is a doc comment.
      */
-    function isDocComment(comment) {
+    function defaultDocCommentFilter(comment) {
         return comment.type === 'Block' && comment.value[0] === '*';
     }
 
@@ -122,7 +128,6 @@
     /**
      * A class for doc links.
      * @constructor
-     * @exports
      */
     function DocLink(comment, target, context) {
 
@@ -151,7 +156,7 @@
 
     /**
      * Property name of the doc link in the link target when {@link DocLink#attach}
-     * was called. In default:    {@code '__$doclink$__'}
+     * was called. In default:  {@code __$doclink$__}
      * @type {string}
      */
     DocLink.propName = '__$doclink$__';
@@ -180,10 +185,9 @@
 
 
     /**
-     * A class for doc linkers.    The doc linker has doc links and attaching/detaching
+     * A class for doc linkers.  The doc linker has doc links and attaching/detaching
      * method.
      * @constructor
-     * @exports
      */
     function DocLinker() {
         this.links = [];
@@ -229,14 +233,16 @@
 
     /**
      * Analyze the specified AST to make doc links.
+     *
+     * NOTE: Given AST should have comments and range.
+     *
      * @param {AstNode} root The AST node as the root.
-     * @param {?Object=} opt Options.    Set {@code opt.fileDoc} if the code has a
-     *         file doc comment.    You can change doc comment spec by set your test
-     *         function as {@code opt.isDocComment}.    In default, {@link isDocComment}
-     *         will be used.
+     * @param {?Object=} opt Options.  Set {@code opt.fileDoc} if the code has a
+     *     file doc comment.  You can change doc comment spec by set your test
+     *     function as {@code opt.isDocComment}.  In default, {@link isDocComment}
+     *     will be used.
      * @return {DocLinker} The doc linker has results. You can get doc links by
-     *         {@link DocLinker#links}.
-     * @exports
+     *     {@link DocLinker#links}.
      */
     function analyze(root, opt) {
         assert(root.comments, 'comments should be exists');
@@ -250,7 +256,7 @@
 
 
         linker = new DocLinker(root.comments);
-        comments = root.comments.filter(opt && opt.isDocComment ? opt.isDocComment : isDocComment);
+        comments = root.comments.filter(opt && opt.isDocComment ? opt.isDocComment : defaultDocCommentFilter);
         commentsLen = comments.length;
 
         // Do nothing if no comments
@@ -276,9 +282,9 @@
                     // be linked.
                     //
                     // Example:
-                    //     /** It should NOT be linked. */
-                    //     /** It should be linked. */
-                    //     expr;
+                    //   /** It should NOT be linked. */
+                    //   /** It should be linked. */
+                    //   expr;
                     while (currentComment && currentComment.range[1] <= currentNodeStart) {
                         if (prevComment) {
                             linker.link(prevComment, null, parentNode);

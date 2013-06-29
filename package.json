@@ -1,7 +1,7 @@
 {
   "name": "doclink",
   "description": "Make doc links that link to AST node and JsDoc comment",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "orgachem",
   "keywords": [
     "jsdoc",

@@ -1,0 +1,9 @@
+[submodule "doclink"]
+	path = doclink
+	url = https://github.com/OrgaChem/doclink.git
+[submodule "estraverse"]
+	path = estraverse
+	url = https://github.com/Constellation/estraverse.git
+[submodule "esprima"]
+	path = esprima
+	url = https://github.com/ariya/esprima.git

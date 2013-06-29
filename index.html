@@ -148,7 +148,7 @@ likeThis();</textarea>
 
 				doclinker.links.forEach(function(docLink) {
 					var commentElements = $(getElementsByRange(docLink.comment.range));
-					var tokenElements = $(getElementsByRange(docLink.target.range));
+					var tokenElements = $(docLink.target && getElementsByRange(docLink.target.range));
 
 					commentElements.add(tokenElements).bind({
 						mouseenter: function(e) {

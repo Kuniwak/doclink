@@ -117,7 +117,7 @@
     /**
      * Default test function used by filtering comments.  Return true if the node
      * is a Block comment and has {@code /**} on the head.
-     * @param {Comment} comment The comment to test.
+     * @param {AstComent} comment The comment to test.
      * @return {boolean} Whether the comment is a doc comment.
      */
     function defaultDocCommentFilter(comment) {
@@ -134,21 +134,21 @@
 
         /**
          * A comment was linked to the symbol.
-         * @type {Comment}
+         * @type {AstComent}
          */
         this.comment = comment;
 
 
         /**
          * A symbol as the link target.
-         * @type {Comment}
+         * @type {AstNode}
          */
         this.target = target;
 
 
         /**
          * A symbol as the context (equals the parent node) of the link target.
-         * @type {Comment}
+         * @type {AstNode}
          */
         this.context = context;
     }
@@ -197,7 +197,7 @@
 
     /**
      * Makes doc link by the specified comment and AST node as the target.
-     * @param {Comment} comment The comment to be linked.
+     * @param {AstComent} comment The comment to be linked.
      * @param {AstNode} target The link target.
      * @param {?AstNode} context The parent node of the target.
      */

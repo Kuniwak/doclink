@@ -6,7 +6,7 @@ Doclink is a JavaScript module provides to link doc comment to AST node as the l
 
 This module works on Node.js and a browser supported JavaScript 1.6 or later.
 
-[Online demo](http://orgachem.github.io/doclink/) is available. Try it!
+[Online demo](http://kuniwak.github.io/doclink/) is available. Try it!
 
 ## How-to
 Install doclink and esprima (or other AST parser).
@@ -89,4 +89,4 @@ Property name of the doc link in the link target when ```DocLink#attach``` was c
 ---
 
 ## License
-Doclink licensed under [MIT](http://orgachem.mit-license.org).
+Doclink licensed under [MIT](http://kuniwak.mit-license.org).
